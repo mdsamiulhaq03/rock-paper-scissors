@@ -1,0 +1,113 @@
+body {
+	font-family: Arial, sans-serif;
+	background-color: #f0f0f0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
+	margin: 0;
+}
+
+h1 {
+	text-align: center;
+	color: #333;
+}
+
+#game {
+	background-color: white;
+	border-radius: 8px;
+	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+	padding: 20px;
+	text-align: center;
+}
+
+button {
+	background-color: #4caf50;
+	color: white;
+	border: none;
+	border-radius: 5px;
+	padding: 10px 20px;
+	font-size: 16px;
+	cursor: pointer;
+	margin: 10px;
+	transition: background-color 0.3s;
+}
+
+button:hover {
+	background-color: #45a049;
+}
+
+#result {
+	margin-top: 20px;
+	font-size: 24px;
+	color: #333;
+}
+
+.result {
+	text-align: center;
+}
+
+.choice img {
+	width: 100px;
+	height: 100px;
+}
+
+@keyframes pop {
+	0% {
+		transform: scale(1);
+	}
+	50% {
+		transform: scale(1.2);
+	}
+	100% {
+		transform: scale(1);
+	}
+}
+
+.choice img.pop {
+	animation: pop 0.3s;
+}
+
+.computer-choice {
+	text-align: center;
+	margin-top: 20px;
+}
+
+/* Fade-in animation */
+@keyframes fadeIn {
+	0% {
+		opacity: 0;
+		transform: translateY(20px);
+	}
+	100% {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+.computer-choice,
+.result {
+	animation: fadeIn 0.5s;
+}
+
+/* Button hover scale effect */
+.choice {
+	transition: transform 0.2s;
+}
+.choice:hover {
+	transform: scale(1.08);
+}
+
+/* Glow effect on result text */
+.result h2 {
+	animation: glow 1.5s infinite alternate;
+}
+
+@keyframes glow {
+	from {
+		text-shadow: 0 0 10px #4caf50, 0 0 20px #4caf50;
+	}
+	to {
+		text-shadow: 0 0 20px #81c784, 0 0 30px #81c784;
+	}
+}
