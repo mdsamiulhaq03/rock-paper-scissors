@@ -1,60 +1,71 @@
 const choices = ["rock", "paper", "scissors"];
+
+// In-memory score counters (no persistence)
+const scores = { wins: 0, ties: 0, losses: 0 };
+
+const winsEl = document.getElementById("wins");
+const tiesEl = document.getElementById("ties");
+const lossesEl = document.getElementById("losses");
 const resultText = document.getElementById("resultText");
-const computerChoiceDiv = document.getElementById("computerChoice");
+const computerChoiceEl = document.getElementById("computerChoice");
+const choiceButtons = document.querySelectorAll(".choice");
 
-const choiceImages = {
-	rock: "https://www.shutterstock.com/image-vector/rocks-cartoon-vector-illustration-hand-600nw-278371901.jpg",
-	paper:
-		"https://p7.hiclipart.com/preview/368/847/792/paper-clip-printing-and-writing-paper-clip-art-paper-cliparts.jpg",
-	scissors:
-		"https://www.shutterstock.com/image-vector/scissors-cutting-paper-welcome-back-600nw-2314075513.jpg",
-};
+function updateScoreDisplay() {
+	winsEl.textContent = scores.wins;
+	tiesEl.textContent = scores.ties;
+	lossesEl.textContent = scores.losses;
+}
 
-document.querySelectorAll(".choice").forEach((button) => {
-	button.addEventListener("click", function () {
-		const img = this.querySelector("img");
-		img.classList.remove("pop"); // Reset animation
-		void img.offsetWidth; // Trigger reflow
-		img.classList.add("pop");
+function updateScore(result) {
+	if (result === "You win!") scores.wins++;
+	else if (result === "You lose!") scores.losses++;
+	else if (result === "It's a tie!") scores.ties++;
+	updateScoreDisplay();
+}
 
-		const userChoice = this.id;
-		const computerChoice = choices[Math.floor(Math.random() * 3)];
-		let result = "";
-		let color = "";
+function getComputerChoice() {
+	const options = ["rock", "paper", "scissors"];
+	return options[Math.floor(Math.random() * options.length)];
+}
 
-		// Show computer's choice
-		computerChoiceDiv.innerHTML = `
-            <p>Computer chose:</p>
-            <img src="${
-							choiceImages[computerChoice]
-						}" alt="${computerChoice}" width="100" height="100"><br>
-            <span>${capitalize(computerChoice)}</span>
-        `;
+function decideWinner(player, computer) {
+	if (player === computer) return "It's a tie!";
+	if (
+		(player === "rock" && computer === "scissors") ||
+		(player === "paper" && computer === "rock") ||
+		(player === "scissors" && computer === "paper")
+	)
+		return "You win!";
+	return "You lose!";
+}
 
-		if (userChoice === computerChoice) {
-			result = "It's a draw!";
-			color = "#888"; // Ash color
-		} else if (
-			(userChoice === "rock" && computerChoice === "scissors") ||
-			(userChoice === "paper" && computerChoice === "rock") ||
-			(userChoice === "scissors" && computerChoice === "paper")
-		) {
-			result = `You win! ${capitalize(userChoice)} beats ${capitalize(
-				computerChoice
-			)}.`;
-			color = "#4caf50"; // Green
-		} else {
-			result = `You lose! ${capitalize(computerChoice)} beats ${capitalize(
-				userChoice
-			)}.`;
-			color = "#e53935"; // Red
+function showComputerChoice(choice) {
+	// simple text or image, keep minimal so it integrates with your HTML
+	computerChoiceEl.innerHTML = `<div class="choice-display">${
+		choice.charAt(0).toUpperCase() + choice.slice(1)
+	}</div>`;
+}
+
+choiceButtons.forEach((btn) => {
+	btn.addEventListener("click", () => {
+		const player = btn.id; // expects buttons with id="rock" | "paper" | "scissors"
+		const computer = getComputerChoice();
+		const result = decideWinner(player, computer);
+
+		// show result + computer choice
+		resultText.textContent = result;
+		showComputerChoice(computer);
+
+		// add pop animation to clicked image if present
+		const img = btn.querySelector("img");
+		if (img) {
+			img.classList.add("pop");
+			setTimeout(() => img.classList.remove("pop"), 300);
 		}
 
-		resultText.textContent = result;
-		resultText.style.color = color;
+		updateScore(result);
 	});
 });
 
-function capitalize(word) {
-	return word.charAt(0).toUpperCase() + word.slice(1);
-}
+// initialize display
+updateScoreDisplay();

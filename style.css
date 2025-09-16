@@ -4,8 +4,10 @@ body {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	height: 100vh;
+	min-height: 100vh;
 	margin: 0;
+	padding: 20px;
+	box-sizing: border-box;
 }
 
 h1 {
@@ -22,7 +24,7 @@ h1 {
 }
 
 button {
-	background-color: #4caf50;
+	background-color: #c2a91ccb;
 	color: white;
 	border: none;
 	border-radius: 5px;
@@ -47,9 +49,27 @@ button:hover {
 	text-align: center;
 }
 
+.choice {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	flex: 0 0 150px; /* fixed visual size so items align symmetrically */
+	width: 150px;
+	height: 150px;
+	padding: 15px;
+	margin: 10px auto; /* center each choice when wrapping */
+}
+
 .choice img {
-	width: 100px;
-	height: 100px;
+	width: 80px;
+	height: 80px;
+	object-fit: cover;
+	margin-bottom: 10px;
+}
+
+.choice br {
+	display: none;
 }
 
 @keyframes pop {
@@ -110,4 +130,92 @@ button:hover {
 	to {
 		text-shadow: 0 0 20px #81c784, 0 0 30px #81c784;
 	}
+}
+
+.scoreboard {
+	width: 100%;
+	max-width: 600px;
+	margin: 20px auto; /* center horizontally */
+	padding: 20px;
+	box-sizing: border-box;
+	border-radius: 15px;
+	background: linear-gradient(45deg, #1a1a1a, #2c2c2c);
+	box-shadow: 0 0 20px rgba(76, 175, 80, 0.3);
+	/* removed left/transform positioning to avoid offset issues */
+}
+
+.score-container {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 20px;
+	padding: 10px;
+	align-items: center; /* vertically center items */
+	justify-items: center; /* center content inside each grid cell */
+}
+
+.score-box {
+	background: rgba(0, 0, 0, 0.4);
+	padding: 10px;
+	border-radius: 10px;
+	border: 1px solid rgba(76, 175, 80, 0.3);
+	overflow: hidden;
+	width: 100%;
+	max-width: 160px; /* keep boxes equal width */
+	min-width: 120px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-evenly;
+	text-align: center;
+}
+
+.score-label {
+	display: block;
+	color: #4caf50;
+	font-size: 1em;
+	letter-spacing: 2px;
+	text-transform: uppercase;
+	margin-bottom: 10px;
+	text-align: center;
+}
+
+.score-value {
+	display: block;
+	color: #fff;
+	font-size: 2.2em;
+	font-weight: bold;
+	text-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
+	text-align: center;
+}
+
+.wins .score-value {
+	color: #4caf50;
+}
+.ties .score-value {
+	color: #ffd700;
+}
+.losses .score-value {
+	color: #ff4444;
+}
+
+.container {
+	width: 100%;
+	max-width: 800px;
+	margin: 0 auto;
+	padding: 20px;
+	display: flex;
+	flex-direction: column;
+	align-items: center; /* center children horizontally */
+	text-align: center; /* center text inside container */
+}
+
+.choices {
+	display: flex;
+	justify-content: center; /* center the row of choices */
+	align-items: center;
+	gap: 30px;
+	flex-wrap: wrap;
+	margin: 20px 0;
+	width: 100%;
+	max-width: 600px;
 }
