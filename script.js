@@ -1,7 +1,24 @@
 const choices = ["rock", "paper", "scissors"];
 
-// In-memory score counters (no persistence)
-const scores = { wins: 0, ties: 0, losses: 0 };
+
+// Load scores from localStorage or initialize
+function loadScores() {
+	const saved = localStorage.getItem('rps-scores');
+	if (saved) {
+		try {
+			return JSON.parse(saved);
+		} catch (e) {
+			// fallback to default if corrupted
+		}
+	}
+	return { wins: 0, ties: 0, losses: 0 };
+}
+
+function saveScores(scores) {
+	localStorage.setItem('rps-scores', JSON.stringify(scores));
+}
+
+const scores = loadScores();
 
 const winsEl = document.getElementById("wins");
 const tiesEl = document.getElementById("ties");
@@ -10,16 +27,19 @@ const resultText = document.getElementById("resultText");
 const computerChoiceEl = document.getElementById("computerChoice");
 const choiceButtons = document.querySelectorAll(".choice");
 
+
 function updateScoreDisplay() {
 	winsEl.textContent = scores.wins;
 	tiesEl.textContent = scores.ties;
 	lossesEl.textContent = scores.losses;
 }
 
+
 function updateScore(result) {
 	if (result === "You win!") scores.wins++;
 	else if (result === "You lose!") scores.losses++;
 	else if (result === "It's a tie!") scores.ties++;
+	saveScores(scores);
 	updateScoreDisplay();
 }
 
@@ -69,3 +89,15 @@ choiceButtons.forEach((btn) => {
 
 // initialize display
 updateScoreDisplay();
+
+// Clear scores button logic
+const clearBtn = document.getElementById("clearScores");
+if (clearBtn) {
+	clearBtn.addEventListener("click", () => {
+		scores.wins = 0;
+		scores.ties = 0;
+		scores.losses = 0;
+		saveScores(scores);
+		updateScoreDisplay();
+	});
+}
